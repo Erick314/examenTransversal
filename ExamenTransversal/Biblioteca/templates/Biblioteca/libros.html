@@ -103,22 +103,16 @@
               placeholder="Buscar"
               aria-label="Search"
               value="{{ request.GET.q }}"
-              <!--
-              Muestra
-              el
-              término
-              de
-              búsqueda
-              actual
-              en
-              el
-              campo
-              de
-              entrada
-              --
             />
             <button class="btn btn-success my-2 my-sm-0" type="submit">
               Buscar
+            </button>
+            <button
+              class="btn btn-secondary my-2 my-sm-0 ml-2"
+              type="button"
+              id="resetButton"
+            >
+              Reiniciar
             </button>
           </form>
         </div>
@@ -188,6 +182,8 @@
         .getElementById("searchForm")
         .addEventListener("submit", function (event) {
           var searchInput = document.getElementById("searchInput").value;
+
+          // Verifica si el campo de búsqueda está vacío
           if (searchInput.trim() === "") {
             event.preventDefault(); // Evita el envío del formulario si el campo de búsqueda está vacío
             swal(
@@ -196,6 +192,16 @@
               "error"
             );
           }
+        });
+
+      // Manejo del clic en el botón de reiniciar
+      document
+        .getElementById("resetButton")
+        .addEventListener("click", function () {
+          // Reinicia el campo de búsqueda
+          document.getElementById("searchInput").value = "";
+          // Envía el formulario sin el término de búsqueda para mostrar todos los libros
+          document.getElementById("searchForm").submit();
         });
     </script>
   </body>
