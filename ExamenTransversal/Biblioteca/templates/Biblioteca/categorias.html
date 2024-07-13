@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Autores</title>
+    <title>Lista de Categorías</title>
 
     <link
       rel="stylesheet"
@@ -28,7 +28,9 @@
           rgba(9, 9, 121, 1) 12%,
           rgba(117, 207, 226, 1) 78%
         );
-        background-size: cover;
+        background-repeat: no-repeat; /* Asegura que el fondo no se repita */
+        background-attachment: fixed; /* Fija el fondo en su lugar */
+        background-size: cover; /* Ajusta el tamaño del fondo para cubrir toda el área */
       }
       .content {
         flex: 1 0 auto;
@@ -72,13 +74,14 @@
             <div class="dropdown-menu">
               <a class="dropdown-item" href="/libros">Catálogo de Libros</a>
               <a class="dropdown-item" href="/autores">Catálogo de Autores</a>
-              <a class="dropdown-item" href="/categorias">Catálogo de Categorías</a>
+              <a class="dropdown-item" href="/categorias"
+                >Catálogo de Categorías</a
+              >
             </div>
           </li>
         </ul>
       </div>
     </nav>
-
 
     <div class="container content">
       <div class="row my-5">
@@ -88,14 +91,49 @@
       </div>
       <div class="row">
         <div class="col-lg-12">
+          <form
+            class="form-inline my-2 my-lg-0"
+            id="searchForm"
+            method="GET"
+            action="{% url 'categorias' %}"
+          >
+            <input
+              class="form-control mr-sm-2"
+              id="searchInput"
+              name="q"
+              type="search"
+              placeholder="Buscar por nombre"
+              aria-label="Search"
+              value="{{ request.GET.q }}"
+            />
+            <button class="btn btn-success my-2 my-sm-0" type="submit">
+              Buscar
+            </button>
+            <button
+              class="btn btn-secondary my-2 my-sm-0 ml-2"
+              type="button"
+              id="resetButton"
+            >
+              Reiniciar
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="row my-5">
+        <div class="col-lg-12">
           <div data-aos="zoom-in">
             <ul class="list-group">
+              <!-- Los resultados se insertarán aquí mediante Django -->
+              {% for categoria in categorias %}
               <li class="list-group-item list-group-item-primary">
-                Un elemento
+                <h5>{{ categoria.nombre }}</h5>
+                <p>{{ categoria.descripcion }}</p>
               </li>
-              <li class="list-group-item list-group-item-secondary">
-                Un segundo elemento
+              {% empty %}
+              <li class="list-group-item text-center">
+                No se encontraron categorías.
               </li>
+              {% endfor %}
             </ul>
           </div>
         </div>
@@ -127,5 +165,32 @@
     </script>
     <!-- SWEET ALERT -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (event) {
+          var searchInput = document.getElementById("searchInput").value;
+
+          // Verifica si el campo de búsqueda está vacío
+          if (searchInput.trim() === "") {
+            event.preventDefault(); // Evita el envío del formulario si el campo de búsqueda está vacío
+            swal(
+              "¡Error!",
+              "Por favor ingresa un término de búsqueda.",
+              "error"
+            );
+          }
+        });
+
+      // Manejo del clic en el botón de reiniciar
+      document
+        .getElementById("resetButton")
+        .addEventListener("click", function () {
+          // Reinicia el campo de búsqueda
+          document.getElementById("searchInput").value = "";
+          // Envía el formulario sin el término de búsqueda para mostrar todas las categorías
+          document.getElementById("searchForm").submit();
+        });
+    </script>
   </body>
 </html>
