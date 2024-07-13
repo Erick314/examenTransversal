@@ -157,22 +157,34 @@
           e.preventDefault();
           let query = $("#searchInput").val();
           $.ajax({
-            url: "/libros/",
+            url: "/search/",
             type: "GET",
             data: { query: query },
             success: function (data) {
               let resultsTable = $("#resultsTable tbody");
               resultsTable.empty();
               data.forEach(function (libro, index) {
-                resultsTable.append(`
+                resultsTable.append(
                                 <tr>
                                     <th scope="row">${index + 1}</th>
                                     <td>${libro.titulo}</td>
                                     <td>${libro.anioPublicacion}</td>
                                     <td>${libro.descripcion}</td>
                                 </tr>
-                            `);
+                            );
               });
+              swal(
+                "Busqueda completada con éxito!",
+                "Presiona el botón para ver los resultados!",
+                "succes"
+              );
+            },
+            error: function () {
+              swal(
+                "Oops!",
+                "Algo salio mal. Por favor intenta otra vez.",
+                "error"
+              );
             },
           });
         });
