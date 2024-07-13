@@ -86,7 +86,7 @@
     <div class="container content">
       <div class="row my-5">
         <div class="col-lg-12">
-          <h1 class="text-center">Lista de Categorías</h1>
+          <h1 class="text-center text-light">Lista de Categorías</h1>
         </div>
       </div>
       <div class="row">
@@ -123,7 +123,6 @@
         <div class="col-lg-12">
           <div data-aos="zoom-in">
             <ul class="list-group">
-              <!-- Los resultados se insertarán aquí mediante Django -->
               {% for categoria in categorias %}
               <li class="list-group-item list-group-item-primary">
                 <h5>{{ categoria.nombre }}</h5>
@@ -170,10 +169,8 @@
         .getElementById("searchForm")
         .addEventListener("submit", function (event) {
           var searchInput = document.getElementById("searchInput").value;
-
-          // Verifica si el campo de búsqueda está vacío
           if (searchInput.trim() === "") {
-            event.preventDefault(); // Evita el envío del formulario si el campo de búsqueda está vacío
+            event.preventDefault();
             swal(
               "¡Error!",
               "Por favor ingresa un término de búsqueda.",
@@ -182,13 +179,10 @@
           }
         });
 
-      // Manejo del clic en el botón de reiniciar
       document
         .getElementById("resetButton")
         .addEventListener("click", function () {
-          // Reinicia el campo de búsqueda
           document.getElementById("searchInput").value = "";
-          // Envía el formulario sin el término de búsqueda para mostrar todas las categorías
           document.getElementById("searchForm").submit();
         });
     </script>

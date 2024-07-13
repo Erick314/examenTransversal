@@ -86,7 +86,7 @@
     <div class="container content">
       <div class="row my-5">
         <div class="col-lg-12">
-          <h1 class="text-center">Catálogo de Libros</h1>
+          <h1 class="text-center text-light">Catálogo de Libros</h1>
         </div>
       </div>
       <div class="row my-5">
@@ -128,17 +128,25 @@
                   <th scope="col">#</th>
                   <th scope="col">Título</th>
                   <th scope="col">Año de Publicación</th>
-                  <th scope="col">Descripción</th>
+                  <th scope="col">Acción</th>
                 </tr>
               </thead>
               <tbody>
-                <!-- Los resultados se insertarán aquí mediante Django -->
+                <!-- Datos de la base de datos  -->
                 {% for libro in libros %}
                 <tr>
                   <th scope="row">{{ libro.idLibro }}</th>
                   <td>{{ libro.titulo }}</td>
                   <td>{{ libro.anioPublicacion }}</td>
-                  <td>{{ libro.descripcion }}</td>
+                  <td>
+                    <!-- El escapejs es para usar caracteres especiales al usar sweet alert que es js -->
+                    <button
+                      class="btn btn-info"
+                      onclick="showDescription('{{ libro.descripcion|escapejs }}')"
+                    >
+                      Ver más
+                    </button>
+                  </td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -180,6 +188,7 @@
     <!-- SWEET ALERT -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+      //Funciones del boton submit
       document
         .getElementById("searchForm")
         .addEventListener("submit", function (event) {
@@ -187,7 +196,7 @@
 
           // Verifica si el campo de búsqueda está vacío
           if (searchInput.trim() === "") {
-            event.preventDefault(); // Evita el envío del formulario si el campo de búsqueda está vacío
+            event.preventDefault(); // Mensaje por sweet alert en caso de apretar el boton sin info en el input
             swal(
               "¡Error!",
               "Por favor ingresa un término de búsqueda.",
@@ -196,7 +205,7 @@
           }
         });
 
-      // Manejo del clic en el botón de reiniciar
+      // Programando el botón de reiniciar campos
       document
         .getElementById("resetButton")
         .addEventListener("click", function () {
@@ -205,6 +214,16 @@
           // Envía el formulario sin el término de búsqueda para mostrar todos los libros
           document.getElementById("searchForm").submit();
         });
+
+      // Con un sweet alert nos muestra la descripción del libro
+      function showDescription(description) {
+        swal({
+          title: "Descripción del Libro",
+          text: description,
+          icon: "info",
+          button: "Cerrar",
+        });
+      }
     </script>
   </body>
 </html>

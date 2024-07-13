@@ -6,11 +6,11 @@ def index(request):
     return render(request, 'Biblioteca/index.html', context)
 
 def autores(request):
-    q = request.GET.get('q', '')  # Obtén el término de búsqueda desde la consulta
+    q = request.GET.get('q', '')  
     if q:
-        autores = Autor.objects.filter(nombre__icontains=q)  # Filtra autores por nombre que contenga el término de búsqueda
+        autores = Autor.objects.filter(nombre__icontains=q)  
     else:
-        autores = Autor.objects.all()  # Obtén todos los autores si no hay término de búsqueda
+        autores = Autor.objects.all()  
     
     context = {
         'autores': autores
@@ -27,13 +27,13 @@ def categorias(request):
     return render(request, 'Biblioteca/categorias.html', context)
 
 def libros(request):
-    query = request.GET.get('q')  # Obtiene el término de búsqueda de la solicitud GET
+    query = request.GET.get('q')  
     if query:
-        libros = Libro.objects.filter(titulo__icontains=query)  # Filtra los libros que contienen el término en el título
+        libros = Libro.objects.filter(titulo__icontains=query) 
     else:
-        libros = Libro.objects.all()  # Muestra todos los libros si no hay término de búsqueda
+        libros = Libro.objects.all() 
     
     context = {
-        'libros': libros  # Pasa los libros filtrados o todos los libros a la plantilla
+        'libros': libros
     }
     return render(request, 'Biblioteca/libros.html', context)
